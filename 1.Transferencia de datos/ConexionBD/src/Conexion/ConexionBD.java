@@ -103,10 +103,9 @@ public class ConexionBD implements IConexion {
     @Override
     public boolean insertarLectura(Lectura lectura) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-String dateString = format.format(lectura.getFechaHora().getTime());
-        String sSQL = "INSERT INTO lecturas (idInvernadero, temperatura, humedad, fechaHora)"
-                + " VALUES (" + lectura.getInvernadero().getIdInvernadero() + ", " + lectura.getTemperatura() + ", " + lectura.getHumedad() + ", '"+dateString+"')";
+        String dateString = format.format(lectura.getFechaHora().getTime());
+        String sSQL = "INSERT INTO lecturas (idSensor, temperatura, humedad, fechaHora)"
+                + " VALUES (" +lectura.getSensor().getIdSensor()+ ", " + lectura.getTemperatura() + ", " + lectura.getHumedad() + ", '" + dateString + "')";
         System.out.println(sSQL);
         try {
             // PreparedStatement
@@ -121,7 +120,27 @@ String dateString = format.format(lectura.getFechaHora().getTime());
 
     @Override
     public ArrayList<Lectura> consultarLecturas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sSQL = "SELECT l.idLectura, l.idSensor, s.idInvernadero, s.marca, l.temperatura, l.humedad, l.fechaHora\n" +
+"FROM lecturas l\n" +
+"JOIN sensores s ON l.idSensor = s.idSensor\n" +
+"JOIN invernaderos i ON i.idInvernadero = s.idInvernadero";
+        try {
+            ArrayList lecturas = new ArrayList<Lectura>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Calendar c = Calendar.getInstance();
+                c.setTimeInMillis(rs.getTimestamp("fechaHora").getTime());
+               Lectura lectura = new Lectura(rs.getInt("idLectura"), new Sensor(rs.getInt("idSensor"), new Invernadero(rs.getInt("idInvernadero")), rs.getString("marca")), rs.getFloat("temperatura"), rs.getFloat("humedad"), c);
+                lecturas.add(lectura);
+            }
+            pstm.close();
+            return lecturas;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -141,8 +160,60 @@ String dateString = format.format(lectura.getFechaHora().getTime());
     }
 
     @Override
-    public boolean insertarLectura(String nombre, String pass, boolean tipoAdmin) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Sensor> consultarSensores() {
+        String sSQL = "SELECT * FROM sensores";
+        try {
+            ArrayList sensores = new ArrayList<Sensor>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Sensor sensor = new Sensor(rs.getInt("idSensor"), new Invernadero(rs.getInt("idInvernadero")), rs.getString("marca"));
+                sensores.add(sensor);
+            }
+            pstm.close();
+            return sensores;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public ArrayList<Sensor> consultarSensoresPorInvernadero(Invernadero invernadero) {
+        String sSQL = "SELECT * FROM sensores WHERE idInvernadero = " + invernadero.getIdInvernadero();
+        try {
+            ArrayList sensores = new ArrayList<Sensor>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Sensor sensor = new Sensor(rs.getInt("idSensor"), invernadero, rs.getString("marca"));
+                sensores.add(sensor);
+            }
+            pstm.close();
+            return sensores;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public ArrayList<Invernadero> consultarInvernaderos() {
+        String sSQL = "SELECT * FROM invernaderos";
+        try {
+            ArrayList invernaderos = new ArrayList<Invernadero>();
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            ResultSet rs = pstm.executeQuery(sSQL);
+            while (rs.next()) {
+                Invernadero inv = new Invernadero(rs.getInt("idInvernadero"));
+                invernaderos.add(inv);
+            }
+            pstm.close();
+            return invernaderos;
+        } catch (SQLException ex) {
+            return null;
+        }
     }
 //
 //    @Override

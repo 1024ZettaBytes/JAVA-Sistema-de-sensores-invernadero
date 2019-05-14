@@ -14,6 +14,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import objetos.Invernadero;
 import objetos.Lectura;
+import objetos.Sensor;
 
 /**
  *
@@ -24,9 +25,9 @@ import objetos.Lectura;
 public class BeanProcesaLectura implements IAccesoDatos {
 
     @Override
-    public boolean agregarLectura(int idInvernadero, float temperatura, float humedad) {
+    public boolean agregarLectura(int idSensor, float temperatura, float humedad) {
         IConexion conexion = new ConexionBD();
-        Lectura l = new Lectura(999, new Invernadero(idInvernadero), temperatura, humedad, Calendar.getInstance());
+        Lectura l = new Lectura(999, new Sensor(idSensor, null, null), temperatura, humedad, Calendar.getInstance());
         return conexion.conectar() && conexion.insertarLectura(l) && conexion.desconectar();
     }
 

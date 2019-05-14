@@ -28,7 +28,9 @@ public interface IConexion {
     public boolean insertarLectura(Lectura lectura);
     public ArrayList<Lectura> consultarLecturas();
     public boolean insertarSensor(Sensor sensor);
-    public boolean insertarLectura(String nombre, String pass, boolean tipoAdmin);
+    public ArrayList<Sensor> consultarSensores();
+    public ArrayList<Sensor> consultarSensoresPorInvernadero(Invernadero invernadero);
+    public ArrayList<Invernadero> consultarInvernaderos();
     
 }
 

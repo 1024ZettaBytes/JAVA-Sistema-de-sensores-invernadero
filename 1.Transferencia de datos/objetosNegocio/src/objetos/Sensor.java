@@ -5,6 +5,8 @@
  */
 package objetos;
 
+import java.util.Objects;
+
 /**
  *
  * @author ed000
@@ -51,8 +53,8 @@ public Sensor(Sensor sensor) {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + this.idSensor;
+        int hash = 7;
+        hash = 89 * hash + this.idSensor;
         return hash;
     }
 
@@ -73,6 +75,10 @@ public Sensor(Sensor sensor) {
         }
         return true;
     }
+
+    
+
+    
     
     
     

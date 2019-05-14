@@ -13,22 +13,22 @@ import java.util.Calendar;
  */
 public class Lectura {
     private int idLectura;
-    private Invernadero invernadero;
+    private Sensor sensor;
     private float temperatura;
     private float humedad;
     private Calendar fechaHora;
 
     public Lectura(Lectura lectura) {
         this.idLectura = lectura.getIdLectura();
-        this.invernadero = lectura.getInvernadero();
+        this.sensor = lectura.getSensor();
         this.temperatura = lectura.getTemperatura();
         this.humedad = lectura.getHumedad();
         this.fechaHora = lectura.getFechaHora();
     }
 
-    public Lectura(int idLectura, Invernadero invernadero, float temperatura, float humedad, Calendar fechaHora) {
+    public Lectura(int idLectura, Sensor sensor, float temperatura, float humedad, Calendar fechaHora) {
         this.idLectura = idLectura;
-        this.invernadero = invernadero;
+        this.sensor = sensor;
         this.temperatura = temperatura;
         this.humedad = humedad;
         this.fechaHora = fechaHora;
@@ -40,14 +40,6 @@ public class Lectura {
 
     public void setIdLectura(int idLectura) {
         this.idLectura = idLectura;
-    }
-
-    public Invernadero getInvernadero() {
-        return invernadero;
-    }
-
-    public void setInvernadero(Invernadero invernadero) {
-        this.invernadero = invernadero;
     }
 
     public float getTemperatura() {
@@ -72,6 +64,14 @@ public class Lectura {
 
     public void setFechaHora(Calendar fechaHora) {
         this.fechaHora = fechaHora;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 
     @Override

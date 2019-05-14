@@ -11,22 +11,22 @@ package objeto;
  */
 public class Mensaje {
 
-    private int idInvernadero;
+    private int idSensor;
     private float temperatura;
     private float humedad;
 
     public Mensaje(int id, float temperatura, float humedad) {
-        this.idInvernadero= id;
+        this.idSensor= id;
         this.temperatura = temperatura;
         this.humedad = humedad;
     }
 
-    public int getIdInvernadero() {
-        return idInvernadero;
+    public int getIdSensor() {
+        return idSensor;
     }
 
-    public void setIdInvernadero(int idSensor) {
-        this.idInvernadero = idSensor;
+    public void setIdSensor(int idSensor) {
+        this.idSensor = idSensor;
     }
 
     public double getTemperatura() {
@@ -48,7 +48,7 @@ public class Mensaje {
     public String toString(){
          String msg;
         msg = "{\n"
-                + "\t'idInvernadero':'" + idInvernadero + "',\n"
+                + "\t'idSensor':'" + idSensor + "',\n"
                 + "\t'temperatura':'" + temperatura + "',\n"
                 + "\t'humedad':'" + humedad + "'\n"
                 + "}";

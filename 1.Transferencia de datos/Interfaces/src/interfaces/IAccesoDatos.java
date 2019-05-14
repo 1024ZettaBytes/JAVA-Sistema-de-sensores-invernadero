@@ -10,5 +10,5 @@ package interfaces;
  * @author ed000
  */
 public interface IAccesoDatos {
-    public boolean agregarLectura(int idInvernadero, float temperatura, float humedad);
+    public boolean agregarLectura(int idSensor, float temperatura, float humedad);
 }

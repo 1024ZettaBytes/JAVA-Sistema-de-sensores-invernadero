@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -17,6 +18,7 @@ import objetos.Invernadero;
 import objetos.Lectura;
 import objetos.Sensor;
 import objetos.Usuario;
+import org.json.JSONObject;
 
 /**
  *
@@ -28,7 +30,36 @@ public class PruebaConexion {
 
         IConexion conexion = new ConexionBD();
        
-        System.out.println(conexion.conectar());
         
+        if(conexion.conectar()){
+       ArrayList<Lectura> lecturas = conexion.consultarLecturas();
+       SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
+                    JSONObject j;
+                   String datos="{lecturas:[";
+                    Lectura lectura = lecturas.get(0);
+                        int idLectura= lectura.getIdLectura();
+                        int idSensor = lectura.getSensor().getIdSensor();
+                        String marca = lectura.getSensor().getMarca();
+                        int idInvernadero = lectura.getSensor().getInvernadero().getIdInvernadero();
+                        float temperatura = lectura.getTemperatura();
+                        float humedad= lectura.getHumedad();
+                        String fechaHora = formater.format(lectura.getFechaHora().getTime());
+                        datos = datos+"{idLectura:"+idLectura+","
+                                  +"sensor:{"
+                                            +"idSensor:"+idSensor+","
+                                            +"marca:"+marca+"},"
+                                  +"idInvernadero:"+idInvernadero+","
+                                  +"temperatura:"+temperatura+","
+                                  +"humedad:"+humedad+","
+                                +"fechaHora:'"+fechaHora
+                                +"'}"
+                          +"]}";
+                          j = new JSONObject(datos);
+                          
+                                  
+                        
+                    
+            System.out.println(j.toString(2));
+        }
     }
 }

@@ -51,11 +51,11 @@ public class Main {
             String message = new String(delivery.getBody(), "UTF-8");
             System.out.println(" [x] Mensaje recibido x: ");
             objetoJson = new JSONObject(message);
-            int idInvernadero = objetoJson.getInt("idInvernadero");
+            int idSensor = objetoJson.getInt("idSensor");
             float temperatura = objetoJson.getFloat("temperatura");
             float humedad = objetoJson.getFloat("humedad");
-            System.out.println(idInvernadero +", "+temperatura+", "+humedad);
-            if (beanProcesaLectura.agregarLectura(idInvernadero,temperatura ,humedad )){
+            System.out.println(idSensor +", "+temperatura+", "+humedad);
+            if (beanProcesaLectura.agregarLectura(idSensor,temperatura ,humedad )){
                 System.out.println("Agregado");
             }
             else{
