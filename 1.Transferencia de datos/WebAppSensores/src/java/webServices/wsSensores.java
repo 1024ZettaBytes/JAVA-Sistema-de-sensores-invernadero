@@ -48,9 +48,9 @@ public class wsSensores {
         IConexion c = new ConexionBD();
         if (c.conectar()) {
             ArrayList<Lectura> lecturas = c.consultarLecturas();
-            JSONObject j;
-            String datos = "{lecturas:[";
             if (lecturas != null) {
+                JSONObject j;
+                String datos = "{lecturas:[";
                 SimpleDateFormat formaterFecha = new SimpleDateFormat("dd-MM-yyyy");
                 SimpleDateFormat formaterHora = new SimpleDateFormat("HH:mm:ss");
                 for (Lectura lectura : lecturas) {
@@ -77,12 +77,12 @@ public class wsSensores {
                         datos += ",";
                     }
                 }
-
+                datos += "]}";
+                j = new JSONObject(datos);
+                return j.toString(1);
+            } else {
+                return "ERROR_BD";
             }
-            datos += "]}";
-            j = new JSONObject(datos);
-
-            return j.toString(1);
         } else {
             return "ERROR_BD";
         }
@@ -100,10 +100,9 @@ public class wsSensores {
         IConexion c = new ConexionBD();
         if (c.conectar()) {
             ArrayList<Lectura> lecturas = c.consultarLecturas();
-            JSONObject j;
-            String datos = "{lecturas:[";
             if (lecturas != null) {
-
+                JSONObject j;
+                String datos = "{lecturas:[";
                 Invernadero i = new Invernadero(idInvernadero);
                 SimpleDateFormat formaterFecha = new SimpleDateFormat("dd-MM-yyyy");
                 SimpleDateFormat formaterHora = new SimpleDateFormat("HH:mm:ss");
@@ -135,10 +134,12 @@ public class wsSensores {
 
                 }
 
+                datos += "]}";
+                j = new JSONObject(datos);
+                return j.toString(1);
+            } else {
+                return "ERROR_BD";
             }
-            datos += "]}";
-            j = new JSONObject(datos);
-            return j.toString(1);
         } else {
             return "ERROR_BD";
         }
@@ -162,23 +163,22 @@ public class wsSensores {
                 IConexion c = new ConexionBD();
                 if (c.conectar()) {
                     ArrayList<Lectura> lecturas = c.consultarLecturas();
-                    JSONObject j;
-                    String datos = "{lecturas:[";
                     if (lecturas != null) {
-
+                        JSONObject j;
+                        String datos = "{lecturas:[";
                         Invernadero i = new Invernadero(idInvernadero);
                         SimpleDateFormat formaterFecha = new SimpleDateFormat("dd-MM-yyyy");
                         SimpleDateFormat formaterHora = new SimpleDateFormat("HH:mm:ss");
 
                         for (Lectura lectura : lecturas) {
                             String fechaTexto = formaterFecha.format(lectura.getFechaHora().getTime());
-                            if (lectura.getSensor().getInvernadero().equals(i) && fechaTexto.equals(fecha) ) {
+                            if (lectura.getSensor().getInvernadero().equals(i) && fechaTexto.equals(fecha)) {
                                 int idLectura = lectura.getIdLectura();
                                 int idSensor = lectura.getSensor().getIdSensor();
                                 String marca = lectura.getSensor().getMarca();
                                 float temperatura = lectura.getTemperatura();
                                 float humedad = lectura.getHumedad();
-                                
+
                                 String horaTexto = formaterHora.format(lectura.getFechaHora().getTime());
                                 datos = datos + "{idLectura:" + idLectura + ","
                                         + "sensor:{"
@@ -198,10 +198,75 @@ public class wsSensores {
 
                         }
 
+                        datos += "]}";
+                        j = new JSONObject(datos);
+                        return j.toString(1);
+                    } else {
+                        return "ERROR_BD";
                     }
-                    datos += "]}";
-                    j = new JSONObject(datos);
-                    return j.toString(1);
+                } else {
+                    return "ERROR_BD";
+                }
+            } else {
+                return "ERROR_FORMATO_FECHA";
+            }
+        }
+        return "ERROR_FORMATO_FECHA";
+    }
+
+    @GET
+    @Path("lecturas/invernadero/fecha/promedio/{idInvernadero}/{fecha}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getJsonLecturasInvernaderoPromedioFecha(@PathParam("idInvernadero") int idInvernadero, @PathParam("fecha") String fecha) {
+        if (fecha.length() == 10) {
+            boolean sonDigitos = Character.isDigit(fecha.charAt(0))
+                    && Character.isDigit(fecha.charAt(1))
+                    && Character.isDigit(fecha.charAt(3))
+                    && Character.isDigit(fecha.charAt(4))
+                    && Character.isDigit(fecha.charAt(6))
+                    && Character.isDigit(fecha.charAt(7))
+                    && Character.isDigit(fecha.charAt(8))
+                    && Character.isDigit(fecha.charAt(9));
+            boolean estaSeparada = fecha.charAt(2) == '-' && fecha.charAt(5) == '-';
+            if (sonDigitos && estaSeparada) {
+                IConexion c = new ConexionBD();
+                if (c.conectar()) {
+                    ArrayList<Lectura> lecturas = c.consultarLecturas();
+
+                    if (lecturas != null) {
+                        JSONObject j;
+                        String datos = "{ idInvernadero:" + idInvernadero + ","
+                                + "fecha:" + fecha + ","
+                                + "lecturasPromedio:[";
+                        SimpleDateFormat formaterFecha = new SimpleDateFormat("dd-MM-yyyy");
+                        Invernadero i = new Invernadero(idInvernadero);
+                        float sumaT = 0;
+                        float sumaH = 0;
+                        int nLect = 0;
+                        for (Lectura lectura : lecturas) {
+                            String fechaTexto = formaterFecha.format(lectura.getFechaHora().getTime());
+                            if (lectura.getSensor().getInvernadero().equals(i) && fechaTexto.equals(fecha)) {
+                                float temperatura = lectura.getTemperatura();
+                                float humedad = lectura.getHumedad();
+                                sumaT += temperatura;
+                                sumaH += humedad;
+                                nLect++;
+                            }
+                        }
+                        if (nLect > 0) {
+                            float promedioT = sumaT / nLect;
+                            float promedioH = sumaH / nLect;
+                            datos = datos + "{temperaturaPromedio:" + String.format("%.2f", promedioT) + "," 
+                                    + "humedadPromedio:" + String.format("%.2f", promedioH) + "}";
+
+                        }
+
+                        datos += "]}";
+                        j = new JSONObject(datos);
+                        return j.toString(1);
+                    } else {
+                        return "ERROR_BD";
+                    }
                 } else {
                     return "ERROR_BD";
                 }
@@ -226,13 +291,12 @@ public class wsSensores {
     @Path("lecturas/sensor/id/{idSensor}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getJsonLecturasSensor(@PathParam("idSensor") int idSensor) {
-       IConexion c = new ConexionBD();
+        IConexion c = new ConexionBD();
         if (c.conectar()) {
             ArrayList<Lectura> lecturas = c.consultarLecturas();
-            JSONObject j;
-            String datos = "{lecturas:[";
             if (lecturas != null) {
-
+                JSONObject j;
+                String datos = "{lecturas:[";
                 Sensor s = new Sensor(idSensor, null, null);
                 SimpleDateFormat formaterFecha = new SimpleDateFormat("dd-MM-yyyy");
                 SimpleDateFormat formaterHora = new SimpleDateFormat("HH:mm:ss");
@@ -263,18 +327,19 @@ public class wsSensores {
                     }
 
                 }
-
+                datos += "]}";
+                j = new JSONObject(datos);
+                return j.toString(1);
+            } else {
+                return "ERROR_BD";
             }
-            datos += "]}";
-            j = new JSONObject(datos);
-            return j.toString(1);
+
         } else {
             return "ERROR_BD";
         }
     }
-    
-    
-@GET
+
+    @GET
     @Path("lecturas/sensor/fecha/{idSensor}/{fecha}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getJsonLecturasSensorFecha(@PathParam("idSensor") int idSensor, @PathParam("fecha") String fecha) {
@@ -292,23 +357,22 @@ public class wsSensores {
                 IConexion c = new ConexionBD();
                 if (c.conectar()) {
                     ArrayList<Lectura> lecturas = c.consultarLecturas();
-                    JSONObject j;
-                    String datos = "{lecturas:[";
                     if (lecturas != null) {
-
+                        JSONObject j;
+                        String datos = "{lecturas:[";
                         Sensor s = new Sensor(idSensor, null, null);
                         SimpleDateFormat formaterFecha = new SimpleDateFormat("dd-MM-yyyy");
                         SimpleDateFormat formaterHora = new SimpleDateFormat("HH:mm:ss");
 
                         for (Lectura lectura : lecturas) {
                             String fechaTexto = formaterFecha.format(lectura.getFechaHora().getTime());
-                            if (lectura.getSensor().equals(s) && fechaTexto.equals(fecha) ) {
+                            if (lectura.getSensor().equals(s) && fechaTexto.equals(fecha)) {
                                 int idLectura = lectura.getIdLectura();
                                 int idInvernadero = lectura.getSensor().getInvernadero().getIdInvernadero();
                                 String marca = lectura.getSensor().getMarca();
                                 float temperatura = lectura.getTemperatura();
                                 float humedad = lectura.getHumedad();
-                                
+
                                 String horaTexto = formaterHora.format(lectura.getFechaHora().getTime());
                                 datos = datos + "{idLectura:" + idLectura + ","
                                         + "sensor:{"
@@ -327,11 +391,13 @@ public class wsSensores {
                             }
 
                         }
-
+                        datos += "]}";
+                        j = new JSONObject(datos);
+                        return j.toString(1);
+                    } else {
+                        return "ERROR_BD";
                     }
-                    datos += "]}";
-                    j = new JSONObject(datos);
-                    return j.toString(1);
+
                 } else {
                     return "ERROR_BD";
                 }
@@ -341,4 +407,40 @@ public class wsSensores {
         }
         return "ERROR_FORMATO_FECHA";
     }
+
+    @GET
+    @Path("/sensores/invernadero/id/{idInvernadero}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getJsonSensoresInvernadero(@PathParam("idInvernadero") int idInvernadero) {
+        IConexion c = new ConexionBD();
+        if (c.conectar()) {
+            ArrayList<Sensor> sensores = c.consultarSensores();
+            if (sensores != null) {
+                JSONObject j;
+                String datos = "{sensores:[";
+                Invernadero i = new Invernadero(idInvernadero);
+                for (Sensor sensor : sensores) {
+                    if (sensor.getInvernadero().equals(i)) {
+                        int idSensor = sensor.getIdSensor();
+                        String marca = sensor.getMarca();
+                        datos = datos + "{idSensor:" + idSensor + ","
+                                + "idInvernadero:" + idInvernadero + ","
+                                + "marca:" + marca
+                                + "}";
+                        if (sensores.indexOf(sensor) < sensores.size() - 1) {
+                            datos += ",";
+                        }
+                    }
+                }
+                datos += "]}";
+                j = new JSONObject(datos);
+                return j.toString(1);
+            } else {
+                return "ERROR_BD";
+            }
+        } else {
+            return "ERROR_BD";
+        }
+    }
+
 }
