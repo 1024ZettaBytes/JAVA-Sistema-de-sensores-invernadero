@@ -8,6 +8,7 @@
             <included-library dirs="200">reference.Interfaces.jar</included-library>
             <included-library dirs="200">reference.ConexionBD.jar</included-library>
             <included-library dirs="200">reference.objetosNegocio.jar</included-library>
+            <included-library dirs="200">file.reference.javax.mail.jar</included-library>
             <source-roots>
                 <root id="src.dir" name="Source Packages"/>
             </source-roots>

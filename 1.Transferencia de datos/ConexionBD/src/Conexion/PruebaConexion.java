@@ -32,34 +32,10 @@ public class PruebaConexion {
        
         
         if(conexion.conectar()){
-       ArrayList<Lectura> lecturas = conexion.consultarLecturas();
-       SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
-                    JSONObject j;
-                   String datos="{lecturas:[";
-                    Lectura lectura = lecturas.get(0);
-                        int idLectura= lectura.getIdLectura();
-                        int idSensor = lectura.getSensor().getIdSensor();
-                        String marca = lectura.getSensor().getMarca();
-                        int idInvernadero = lectura.getSensor().getInvernadero().getIdInvernadero();
-                        float temperatura = lectura.getTemperatura();
-                        float humedad= lectura.getHumedad();
-                        String fechaHora = formater.format(lectura.getFechaHora().getTime());
-                        datos = datos+"{idLectura:"+idLectura+","
-                                  +"sensor:{"
-                                            +"idSensor:"+idSensor+","
-                                            +"marca:"+marca+"},"
-                                  +"idInvernadero:"+idInvernadero+","
-                                  +"temperatura:"+temperatura+","
-                                  +"humedad:"+humedad+","
-                                +"fechaHora:'"+fechaHora
-                                +"'}"
-                          +"]}";
-                          j = new JSONObject(datos);
-                          
-                                  
-                        
-                    
-            System.out.println(j.toString(2));
-        }
+       Usuario u = conexion.consultarUsuario();
+       if(u!=null && !u.getIdUsuario().equals("ERROR")){
+           System.out.println(u.getIdUsuario());
+       }
     }
+}
 }

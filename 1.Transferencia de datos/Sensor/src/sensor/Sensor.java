@@ -21,8 +21,8 @@ public class Sensor {
     
 
     public static void main(String[] args) throws Exception{
-        while(true){
-        Mensaje msj = new Mensaje(5, 15f,10f);
+        
+        Mensaje msj = new Mensaje(66, 40f,13f);
         //Cola a la que se enviarán los mensajes
         String nombreCola = "colaLecturas";
         //Dirección del host en la que se encuentra la cola a la que se enviarán los mesajes
@@ -51,8 +51,8 @@ public class Sensor {
             channel.close();
             connection.close();
         }
-        Thread.sleep(10000);
-    }
+        
+    
     }
 
 }

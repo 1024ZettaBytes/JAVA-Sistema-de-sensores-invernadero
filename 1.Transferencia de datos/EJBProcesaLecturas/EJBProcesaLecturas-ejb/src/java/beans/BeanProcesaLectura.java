@@ -15,6 +15,7 @@ import javax.ejb.Remote;
 import objetos.Invernadero;
 import objetos.Lectura;
 import objetos.Sensor;
+import objetos.Usuario;
 
 /**
  *
@@ -27,8 +28,28 @@ public class BeanProcesaLectura implements IAccesoDatos {
     @Override
     public boolean agregarLectura(int idSensor, float temperatura, float humedad) {
         IConexion conexion = new ConexionBD();
-        Lectura l = new Lectura(999, new Sensor(idSensor, null, null), temperatura, humedad, Calendar.getInstance());
-        return conexion.conectar() && conexion.insertarLectura(l) && conexion.desconectar();
+        if (conexion.conectar()) {
+            //Inserta la lectura en la bd
+            Lectura l = new Lectura(999, new Sensor(idSensor, null, null), temperatura, humedad, Calendar.getInstance());
+            conexion.insertarLectura(l);
+            // Obtiene el usuario para ver si se necesita enviar notificación
+            Usuario u = conexion.consultarUsuario();
+            if (u != null && !u.getIdUsuario().equals("ERROR")) {
+                if (u.isNotificacionActivada()) {
+                    if (temperatura >= u.getTemperaturaCritica() || humedad >= u.getHumedadCritica()) {
+                        // Enviar mail
+                        // Se crea la clase runnable
+                        Invernadero i = conexion.consultarInvernaderoPorSensor(new Sensor(idSensor, null, null));
+                        HiloEnviaNotificacion hiloEnvia = new HiloEnviaNotificacion(u.getNombre(), u.getCorreo(), i.getIdInvernadero(), temperatura, humedad);
+                        hiloEnvia.run();
+                        return true;
+                    }
+                    
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
 }

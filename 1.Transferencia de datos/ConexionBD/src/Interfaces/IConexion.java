@@ -24,13 +24,14 @@ public interface IConexion {
     public boolean hayConexion();
     public boolean insertarUsuario(Usuario usuario);
     public boolean actualizarUsuario(Usuario usuario);
-    public ArrayList<Usuario> consultarUsuarios();
+    public Usuario consultarUsuario();
     public boolean insertarLectura(Lectura lectura);
     public ArrayList<Lectura> consultarLecturas();
     public boolean insertarSensor(Sensor sensor);
     public ArrayList<Sensor> consultarSensores();
     public ArrayList<Sensor> consultarSensoresPorInvernadero(Invernadero invernadero);
     public ArrayList<Invernadero> consultarInvernaderos();
+    public Invernadero consultarInvernaderoPorSensor(Sensor sensor);
     
 }
 

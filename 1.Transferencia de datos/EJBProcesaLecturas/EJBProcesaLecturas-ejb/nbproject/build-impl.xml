@@ -816,22 +816,26 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${reference.Interfaces.jar}" todir="${build.classes.dir}"/>
         <copyfiles files="${reference.ConexionBD.jar}" todir="${build.classes.dir}"/>
         <copyfiles files="${reference.objetosNegocio.jar}" todir="${build.classes.dir}"/>
+        <copyfiles files="${file.reference.javax.mail.jar}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
         <basename file="${reference.Interfaces.jar}" property="manifest.reference.Interfaces.jar"/>
         <basename file="${reference.ConexionBD.jar}" property="manifest.reference.ConexionBD.jar"/>
         <basename file="${reference.objetosNegocio.jar}" property="manifest.reference.objetosNegocio.jar"/>
+        <basename file="${file.reference.javax.mail.jar}" property="manifest.file.reference.javax.mail.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 "/>
+            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.reference.Interfaces.jar}"/>
             <attribute name="jar-2-Extension-Name" value="${manifest.reference.ConexionBD.jar}"/>
             <attribute name="jar-3-Extension-Name" value="${manifest.reference.objetosNegocio.jar}"/>
+            <attribute name="jar-4-Extension-Name" value="${manifest.file.reference.javax.mail.jar}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <copyfiles files="${reference.Interfaces.jar}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${reference.ConexionBD.jar}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${reference.objetosNegocio.jar}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.javax.mail.jar}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">
