@@ -27,8 +27,8 @@
         <title>Registrar sensor</title>
         <script type="text/javascript">
             //notar el protocolo.. es 'ws' y no 'http'
-            var wsUri = "ws://localhost:8080/App_Web_Sensores/consultarDisponibilidadSensor";
-            var wsUri2 = "ws://localhost:8080/App_Web_Sensores/agregarSensor";
+            var wsUri = "ws://localhost:8080/WebAppSensores/consultarDisponibilidadSensor";
+            var wsUri2 = "ws://localhost:8080/WebAppSensores/agregarSensor";
             var websocket = new WebSocket(wsUri); //creamos el socket
             var socketAgregar = new WebSocket(wsUri2); //creamos el socket
             var estadoDiv = null;
@@ -149,44 +149,31 @@
         </div>
         <nav>
             <ul>
-                <li><a href="index.jsp"><img  src="imgs/home.png" alt=""/></a></li>                
+                <li><a href="resgistrarSensor.jsp"><img  src="imgs/home.png" alt=""/></a></li>                
                 <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">Rentas</a>
+                    <a href="javascript:void(0)" class="dropbtn">Sensores</a>
                     <div class="dropdown-content">
-                        <a href="rentarVideojuego.jsp">Rentar un videojuego</a>                        
-                        <a href="devolverVideojuego.jsp">Devolver un videojuego</a>
-                        <a href="consultaRentasCliente.jsp">Consultar rentas de un cliente</a>                        
-                        <a href="consultaRentasPeriodo.jsp">Consultar rentas dado un periodo de fechas</a>
+                        <a href="resgistrarSensor.jsp">Registrar Sensor</a>                        
                     </div>
                 </li>
 
                 <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">Clientes</a>
+                    <a href="javascript:void(0)" class="dropbtn">Lecturas</a>
                     <div class="dropdown-content">
-                        <a href="agregarCliente.jsp">Agregar</a>                        
-                        <a href="eliminaCliente.jsp">Eliminar</a>                         
-                        <a href="listaClientes.jsp">Consultar lista de clientes</a>
-                        <a href="consultaClienteCred.jsp">Consultar cliente por ID</a>                        
+                        <a href="consultarEstadisticas.jsp">Estadisticas</a>                                           
 
                     </div>
 
                 </li>
                 <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">Videojuegos</a>
+                    <a href="javascript:void(0)" class="dropbtn">Usuario</a>
                     <div class="dropdown-content">                       
-                        <a href="agregarVideojuego.jsp">Agregar videojuego</a>                                                                   
+                        <a href="programarAlarma.jsp">Programar Alarma</a>                                                                   
                     </div>
-                <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">Inventario</a>
-                    <div class="dropdown-content">                       
-                        <a href=agregarInventario.jsp>Inventariar unidades</a>                        
-                        <a href="eliminarInventario.jsp">Desinventariar videojuego</a>                                             
-                    </div>
-                </li>
                 <li><a href="controlPrincipal?tarea=logout">Logout</a></li>
             </ul>
         </nav>
-        <div class="contenido">
+        <div class="contenido1">
             <h1>Registrar nuevo sensor</h1>
             <div class="form-style-8">
                 <h2>Ingresa los datos del sensor a registrar</h2>

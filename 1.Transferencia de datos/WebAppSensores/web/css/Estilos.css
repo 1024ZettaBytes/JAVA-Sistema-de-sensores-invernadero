@@ -72,16 +72,35 @@ nav li.dropdown {
     display: block;
 }
 
-div.contenido{
+div.contenido1{
     position: relative;
     top:95px;
-    
+    width: 100%;
+    padding-left: 25%;
+    padding-right: 25%;
+    text-align: center;
+}
+div.contenido2{
+    position: relative;
+    top:95px;
+    width: 100%; 
+    padding-left: 10%;
+    padding-right: 10%;
+    text-align: center;
+}
+div.contenido3{
+    position: relative;
+    top:95px;
+    width: 100%; 
+    padding-left: 40%;
+    padding-right: 40%;
     text-align: center;
 }
 
+
 .form-style-8{
     font-family: century gothic;
-    width: 80%;
+    width: 100%;
     padding: 30px;
     background: #FFFFFF;
     margin: 50px auto;
@@ -177,4 +196,8 @@ div.contenido{
 #cSensor{
     width: 100%;
     height: 400px;
+}
+.form-style-8 a.aviso {
+ color: red;
+
 }

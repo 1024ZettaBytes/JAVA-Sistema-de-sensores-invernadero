@@ -15,12 +15,13 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import objetos.Invernadero;
 import objetos.Lectura;
 import objetos.Sensor;
+import objetos.Usuario;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -256,7 +257,7 @@ public class wsSensores {
                         if (nLect > 0) {
                             float promedioT = sumaT / nLect;
                             float promedioH = sumaH / nLect;
-                            datos = datos + "{temperaturaPromedio:" + String.format("%.2f", promedioT) + "," 
+                            datos = datos + "{temperaturaPromedio:" + String.format("%.2f", promedioT) + ","
                                     + "humedadPromedio:" + String.format("%.2f", promedioH) + "}";
 
                         }
@@ -282,9 +283,44 @@ public class wsSensores {
      *
      * @param content representation for the resource
      */
-    @PUT
+    @POST
+    @Path("usuario/alarma/programar")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
+    public String actualizaAlarmaUsuario(String datosJson) {
+        JSONObject j = new JSONObject(datosJson);
+        String correo = j.getString("correo");
+        if (isValid(correo)) {
+            IConexion c = new ConexionBD();
+            if (c.conectar()) {
+                Usuario u = c.consultarUsuario();
+                if (u != null) {
+                    if (!u.getIdUsuario().equals("ERROR")) {
+                        String id = u.getIdUsuario();
+                        boolean notif = j.getBoolean("notificacion");
+                        float temp  = j.getFloat("temperaturaCritica");
+                        float hum = j.getFloat("humedadCritica");
+                        u = new Usuario(id, null, correo, notif, temp, hum);
+                        if(c.actualizarUsuario(u)){
+                            return "SUCCES";
+                        }
+                        else{
+                            return "ERROR_BD";
+                        }
+                    }
+                    else{
+                         return "ERROR_BD";
+                    }
+                            
+                } else {
+                    return "ERROR_BD";
+                }
+            } else {
+                return "ERROR_BD";
+            }
+        } else {
+            return "ERROR_FORMATO_CORREO";
+        }
+
     }
 
     @GET
@@ -441,6 +477,11 @@ public class wsSensores {
         } else {
             return "ERROR_BD";
         }
+    }
+
+    private boolean isValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
     }
 
 }

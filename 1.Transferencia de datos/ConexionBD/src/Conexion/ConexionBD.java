@@ -97,7 +97,22 @@ public class ConexionBD implements IConexion {
 
     @Override
     public boolean actualizarUsuario(Usuario usuario) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sSQL = "UPDATE usuarios SET idUsuario = '" + usuario.getIdUsuario()
+                + "', correo = '" + usuario.getCorreo()
+                + "', notificacion = " + usuario.isNotificacionActivada()
+                + ", temperaturaCritica = " + usuario.getTemperaturaCritica()
+                + ", humedadCritica = " + usuario.getHumedadCritica()
+                + " WHERE idUsuario = '"+usuario.getIdUsuario()+"'";
+        System.out.println(sSQL);
+        try {
+            // PreparedStatement
+            PreparedStatement pstm = conn.prepareStatement(sSQL);
+            pstm.execute();
+            pstm.close();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
     }
 
     @Override

@@ -29,13 +29,14 @@ public class PruebaConexion {
     public static void main(String[] args) throws ParseException {
 
         IConexion conexion = new ConexionBD();
-       
-        
-        if(conexion.conectar()){
-       Usuario u = conexion.consultarUsuario();
-       if(u!=null && !u.getIdUsuario().equals("ERROR")){
-           System.out.println(u.getIdUsuario());
-       }
+
+        if (conexion.conectar()) {
+            Usuario u = conexion.consultarUsuario();
+            boolean notif = true;
+            float temp = 30;
+            float hum = 15;
+            u = new Usuario(u.getIdUsuario(), u.getNombre(), "ed00001110@gmail.com", notif, temp, hum);
+            System.out.println(conexion.actualizarUsuario(u));
+        }
     }
-}
 }

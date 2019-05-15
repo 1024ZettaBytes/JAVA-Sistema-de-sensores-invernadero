@@ -22,7 +22,7 @@ public class Sensor {
 
     public static void main(String[] args) throws Exception{
         
-        Mensaje msj = new Mensaje(66, 40f,13f);
+        Mensaje msj = new Mensaje(5, 100f,10f);
         //Cola a la que se enviarán los mensajes
         String nombreCola = "colaLecturas";
         //Dirección del host en la que se encuentra la cola a la que se enviarán los mesajes

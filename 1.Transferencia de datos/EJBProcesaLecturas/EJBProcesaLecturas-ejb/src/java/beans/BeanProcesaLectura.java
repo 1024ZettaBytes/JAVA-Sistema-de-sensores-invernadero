@@ -42,9 +42,9 @@ public class BeanProcesaLectura implements IAccesoDatos {
                         Invernadero i = conexion.consultarInvernaderoPorSensor(new Sensor(idSensor, null, null));
                         HiloEnviaNotificacion hiloEnvia = new HiloEnviaNotificacion(u.getNombre(), u.getCorreo(), i.getIdInvernadero(), temperatura, humedad);
                         hiloEnvia.run();
+                        conexion.desconectar();
                         return true;
                     }
-                    
                 }
             }
             return true;

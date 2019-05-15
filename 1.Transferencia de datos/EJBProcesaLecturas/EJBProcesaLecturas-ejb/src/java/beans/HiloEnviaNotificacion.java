@@ -61,7 +61,7 @@ public class HiloEnviaNotificacion implements Runnable{
      message.setFrom(new InternetAddress(user));  
      message.addRecipient(Message.RecipientType.TO,new InternetAddress(correo));  
      message.setSubject("Notificación invernadero");
-     String mensaje = "Eduardo, recibes este correo debido a que el invernadero "
+     String mensaje = nombreUsuario+", recibes este correo debido a que el invernadero "
              +idInvernadero+" ha alcanzado los parámetros críticos de temperatura y/o humedad.\n"
              +"- Temperatura: "+String.format("%.2f", temperatura)+" °C\n"
              +"- Humedad: "+String.format("%.2f", humedad)+" RH\n\n"
