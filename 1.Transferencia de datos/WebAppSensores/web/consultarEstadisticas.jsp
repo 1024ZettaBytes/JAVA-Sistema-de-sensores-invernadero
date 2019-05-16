@@ -286,7 +286,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="resgistrarSensor.jsp"><img  src="imgs/home.png" alt=""/></a></li>                
+                <li><a href="index.jsp"><img  src="imgs/home.png" alt=""/></a></li>                
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">Sensores</a>
                     <div class="dropdown-content">
@@ -307,7 +307,7 @@
                     <div class="dropdown-content">                       
                         <a href="programarAlarma.jsp">Programar Alarma</a>                                                                   
                     </div>
-                <li><a href="controlPrincipal?tarea=logout">Logout</a></li>
+               <!-- <li><a href="controlPrincipal?tarea=logout">Logout</a></li>-->
             </ul>
         </nav>
         <div class="contenido2">
