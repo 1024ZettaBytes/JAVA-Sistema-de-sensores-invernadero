@@ -105,7 +105,7 @@ public class wsSensores {
     public String autentica(String datosJson) throws GeneralSecurityException, IOException {
         JSONObject j = new JSONObject(datosJson);
         String idTokenUsuario = j.getString("token");
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(getHttpTransport(), getDefaultJsonFactory()).setAudience(Collections.singletonList("260022130926-tqm36lc9g0ggv0dqa4sqbff21el22tdk.apps.googleusercontent.com"))
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(getHttpTransport(), getDefaultJsonFactory()).setAudience(Collections.singletonList("340054074881-5aikhj5soo0ifgm55ddraja20cj70qoc.apps.googleusercontent.com"))
                 // Or, if multiple clients access the backend:
                 //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
                 .build();

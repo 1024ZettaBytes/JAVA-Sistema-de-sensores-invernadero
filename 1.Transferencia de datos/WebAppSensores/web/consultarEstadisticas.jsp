@@ -27,7 +27,7 @@
         <script src="chartjs/axistitle/chartist-plugin-axistitle.js"></script>
         <link href="css/Estilos.css" rel="stylesheet" type="text/css"/>
         <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
-        <meta name="google-signin-client_id" content="260022130926-tqm36lc9g0ggv0dqa4sqbff21el22tdk.apps.googleusercontent.com">
+        <meta name="google-signin-client_id" content="340054074881-5aikhj5soo0ifgm55ddraja20cj70qoc.apps.googleusercontent.com">
        
         <title>Estadíticas</title>
 
@@ -40,7 +40,7 @@
                      * client.
                      */
                     auth2 = gapi.auth2.init({
-                        client_id: '260022130926-tqm36lc9g0ggv0dqa4sqbff21el22tdk.apps.googleusercontent.com'
+                        client_id: '340054074881-5aikhj5soo0ifgm55ddraja20cj70qoc.apps.googleusercontent.com'
                     });
 
                     auth2.then(function () {

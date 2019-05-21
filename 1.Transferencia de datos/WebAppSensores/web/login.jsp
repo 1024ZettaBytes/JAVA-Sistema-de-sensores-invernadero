@@ -22,14 +22,15 @@
         <script src="scripts/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="scripts/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <link href="css/Estilos.css" rel="stylesheet" type="text/css"/>
-        <meta name="google-signin-client_id" content="260022130926-tqm36lc9g0ggv0dqa4sqbff21el22tdk.apps.googleusercontent.com">
+        <meta name="google-signin-client_id" content="340054074881-5aikhj5soo0ifgm55ddraja20cj70qoc.apps.googleusercontent.com">
         <script>
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
+                    console.log(this.responseText);
                     if ("1" === this.responseText) {
                         window.location.replace("index.jsp");
-
+                        
                     } else {
                         signOut();
                         document.getElementById('exampleModalLabel').innerHTML = "Error";
