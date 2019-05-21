@@ -22,10 +22,39 @@
         <script src="scripts/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="scripts/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="scripts/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+        <meta name="google-signin-client_id" content="260022130926-tqm36lc9g0ggv0dqa4sqbff21el22tdk.apps.googleusercontent.com">
         <link href="css/Estilos.css" rel="stylesheet" type="text/css"/>
         <title>Registrar sensor</title>
         <script type="text/javascript">
+            var ses = false;
+            function onLoad() {
+                gapi.load('auth2', function () {
+                    /**
+                     * Retrieve the singleton for the GoogleAuth library and set up the
+                     * client.
+                     */
+                    auth2 = gapi.auth2.init({
+                        client_id: '260022130926-tqm36lc9g0ggv0dqa4sqbff21el22tdk.apps.googleusercontent.com'
+                    });
+
+                    auth2.then(function () {
+                        var isSignedIn = auth2.isSignedIn.get();
+                        var currentUser = auth2.currentUser.get();
+                        if (isSignedIn) {
+                            console.log("SI");
+                        } else {
+                           window.location.replace("login.jsp");
+                        }
+                    });
+
+                });
+            }
+             function signOut() {
+                            auth2.signOut().then(function () {
+                        window.location.replace("login.jsp");
+                    });
+                }
             //notar el protocolo.. es 'ws' y no 'http'
             var wsUri = "ws://localhost:8080/WebAppSensores/consultarDisponibilidadSensor";
             var wsUri2 = "ws://localhost:8080/WebAppSensores/agregarSensor";
@@ -170,7 +199,8 @@
                     <div class="dropdown-content">                       
                         <a href="programarAlarma.jsp">Programar Alarma</a>                                                                   
                     </div>
-               <!-- <li><a href="controlPrincipal?tarea=logout">Logout</a></li>-->
+                </li>
+                <li><a href="javascript:signOut()">Logout</a></li>
             </ul>
         </nav>
         <div class="contenido1">

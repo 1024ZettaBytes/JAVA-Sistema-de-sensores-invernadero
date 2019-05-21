@@ -96,7 +96,13 @@ div.contenido3{
     padding-right: 40%;
     text-align: center;
 }
-
+div.contenidoLogin{
+      position: relative;
+    top:95px;
+    padding-left: 25%;
+    padding-right: 25%;
+    text-align: center;
+}
 
 .form-style-8{
     font-family: century gothic;
@@ -200,4 +206,10 @@ div.contenido3{
 .form-style-8 a.aviso {
  color: red;
 
+}
+div.btnLogin{
+    width:100%;
+    padding-left: 40%;
+    padding-right: 40%;
+    float: center;
 }

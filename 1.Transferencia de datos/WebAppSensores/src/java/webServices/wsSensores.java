@@ -7,8 +7,18 @@ package webServices;
 
 import Conexion.ConexionBD;
 import Interfaces.IConexion;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.auth.openidconnect.IdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -87,6 +97,52 @@ public class wsSensores {
         } else {
             return "ERROR_BD";
         }
+    }
+
+    @POST
+    @Path("/auth")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String autentica(String datosJson) throws GeneralSecurityException, IOException {
+        JSONObject j = new JSONObject(datosJson);
+        String idTokenUsuario = j.getString("token");
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(getHttpTransport(), getDefaultJsonFactory()).setAudience(Collections.singletonList("260022130926-tqm36lc9g0ggv0dqa4sqbff21el22tdk.apps.googleusercontent.com"))
+                // Or, if multiple clients access the backend:
+                //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+                .build();
+        // (Receive idTokenString by HTTPS POST)
+
+        GoogleIdToken idToken = verifier.verify(idTokenUsuario);
+        if (idToken != null) {
+
+            Payload payload = idToken.getPayload();
+
+            // Get profile information from payload
+            String email = payload.getEmail();
+            IConexion c = new ConexionBD();
+            if (c.conectar()) {
+                if(c.consultarUsuario().getCorreo().equals(email)){
+                    return "1";
+                }
+                else{
+                    return "0";
+                }
+            }
+            else{
+                return "0";
+            }
+
+        } else {
+            return "0";
+        }
+
+    }
+
+    public NetHttpTransport getHttpTransport() {
+        return new NetHttpTransport();
+    }
+
+    private static JsonFactory getDefaultJsonFactory() {
+        return JacksonFactory.getDefaultInstance();
     }
 
     /**
@@ -297,20 +353,18 @@ public class wsSensores {
                     if (!u.getIdUsuario().equals("ERROR")) {
                         String id = u.getIdUsuario();
                         boolean notif = j.getBoolean("notificacion");
-                        float temp  = j.getFloat("temperaturaCritica");
+                        float temp = j.getFloat("temperaturaCritica");
                         float hum = j.getFloat("humedadCritica");
                         u = new Usuario(id, null, correo, notif, temp, hum);
-                        if(c.actualizarUsuario(u)){
+                        if (c.actualizarUsuario(u)) {
                             return "SUCCES";
-                        }
-                        else{
+                        } else {
                             return "ERROR_BD";
                         }
+                    } else {
+                        return "ERROR_BD";
                     }
-                    else{
-                         return "ERROR_BD";
-                    }
-                            
+
                 } else {
                     return "ERROR_BD";
                 }
